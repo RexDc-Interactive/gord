@@ -94,6 +94,7 @@ type Window struct {
 
 	// reply stuff
 	currentReplyMsg *discordgo.Message
+	replyMention    bool
 	bottomBar       *components.BottomBar
 }
 
@@ -1336,7 +1337,9 @@ func (window *Window) sendMessage(targetChannelID, message string, replyMsg *dis
 
 	var sendError error
 	if replyMsg != nil {
-		_, sendError = window.session.ChannelMessageSendReply(targetChannelID, message, replyMsg.Reference())
+		reference := replyMsg.Reference()
+
+		_, sendError = window.session.ChannelMessageSendReply(targetChannelID, message, reference, false)
 	} else {
 		_, sendError = window.session.ChannelMessageSend(targetChannelID, message)
 	}

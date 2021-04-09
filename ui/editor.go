@@ -1,10 +1,11 @@
 package ui
 
 import (
+	"fmt"
 	"unicode"
 
-	"github.com/cainy-a/gord/tview"
 	"github.com/atotto/clipboard"
+	"github.com/cainy-a/gord/tview"
 	tcell "github.com/gdamore/tcell/v2"
 
 	"github.com/cainy-a/gord/config"
@@ -469,6 +470,17 @@ func NewEditor(app *tview.Application) *Editor {
 				editor.window.bottomBar.RemoveItemAtIndex(0)
 			}
 			editor.window.currentReplyMsg = nil
+		} else if shortcuts.ToggleReplyMention.Equals(event) {
+			if editor.window.currentReplyMsg != nil {
+				editor.window.bottomBar.RemoveItemAtIndex(0)
+				if editor.window.replyMention {
+					editor.window.replyMention = false
+					editor.window.bottomBar.InsertItemAtStart(fmt.Sprintf("Replying to: %s", editor.window.currentReplyMsg.Author))
+				} else {
+					editor.window.replyMention = true
+					editor.window.bottomBar.InsertItemAtStart(fmt.Sprintf("Replying to: %s (@)", editor.window.currentReplyMsg.Author))
+				}
+			}
 		} else if shortcuts.MoveCursorLeft.Equals(event) {
 			editor.MoveCursorLeft()
 		} else if shortcuts.ExpandSelectionToLeft.Equals(event) {
