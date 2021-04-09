@@ -1337,9 +1337,7 @@ func (window *Window) sendMessage(targetChannelID, message string, replyMsg *dis
 
 	var sendError error
 	if replyMsg != nil {
-		reference := replyMsg.Reference()
-
-		_, sendError = window.session.ChannelMessageSendReply(targetChannelID, message, reference, false)
+		_, sendError = window.session.ChannelMessageSendReply(targetChannelID, message, replyMsg.Reference(), false)
 	} else {
 		_, sendError = window.session.ChannelMessageSend(targetChannelID, message)
 	}
